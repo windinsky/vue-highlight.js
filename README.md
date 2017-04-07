@@ -59,8 +59,8 @@ Vue File:
 <template>
 	<div id="app">
 		<!-- Code Block -->
-		<highlight-code lang="javascript">let str = 'Hello, World!';
-console.log(str);</highlight-code>
+		<highlight-code lang="javascript" :code="let str = 'Hello, World!';
+console.log(str);"></highlight-code>
 
 		<!-- Inline Code Block -->
 		<highlight-code lang="javascript" :inline="true" :code="alert('Hello, World!');"></highlight-code>
