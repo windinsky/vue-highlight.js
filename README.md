@@ -63,7 +63,7 @@ Vue File:
 console.log(str);</highlight-code>
 
 		<!-- Inline Code Block -->
-		<highlight-code lang="javascript" :inline="true">alert('Hello, World!');</highlight-code>
+		<highlight-code lang="javascript" :inline="true" :code="alert('Hello, World!');"></highlight-code>
 	</div>
 </template>
 
