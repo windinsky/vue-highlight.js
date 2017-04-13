@@ -1,48 +1,40 @@
 <template lang="html">
-	<pre v-if="!inline"><code ref="code" :class="lang"></code></pre>
-	<span v-else><code ref="inline-code" :class="lang" :style="inlineCodeStyles"><slot></slot></code></span>
+	<pre v-if="hasCode && !inline"><code ref="code-elm" :class="lang">{{ code }}</code></pre>
+	<pre v-else-if="!hasCode && !inline"><code ref="code-elm" :class="lang"><slot></slot></code></pre>
+
+	<span v-else-if="hasCode && inline"><code ref="code-elm" :class="lang" :style="codeStyles">{{ code }}</code></span>
+	<span v-else="!hasCode && inline"><code ref="code-elm" :class="lang" :style="codeStyles"><slot></slot></code></span>
 </template>
 
-<script>
-import hljs from 'highlight.js';
 
-hljs.configure({
-	languages: []
-});
+<script>
+
+import hljs from 'highlight.js';
 
 export default {
 	name: 'highlight-code',
+    computed:{
+		hasCode() {
+			return (typeof this.code === 'string') && (this.code.length > 0);
+		}
+    },
 	props: {
-		code : String,
 		lang: String,
 		inline: {
 			type: Boolean,
 			default: false
-		}
+		},
+		code: String
 	},
-	data() {
-		return {
-			inlineCodeStyles: {
-				'display': `inline !important`,
-				'vertical-align': `middle`
-			}
-		};
-	},
-	methods: {
+    methods: {
 		init() {
-
-			let code = !this.inline ? this.$refs['code'] : this.$refs['inline-code'];
-
-			/*** 
-			 *  somehow hljs.highlightBlock would break the code.innerHTML and prop.code binding, 
-			 *  since hljs is using textContent to format, I set that property manully. It's ugly...
-			 */
-
-			code.textContent = this.code;
-			hljs.highlightBlock(code);
-			
+			let codeElm = this.$refs['code-elm'];
+			if (this.hasCode) {
+				codeElm.textContent = this.code;
+			}
+			hljs.highlightBlock(codeElm);
 		}
-	},
+    },
 	mounted() {
 		this.init();
 	},
